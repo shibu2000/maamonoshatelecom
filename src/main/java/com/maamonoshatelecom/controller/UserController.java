@@ -9,31 +9,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maamonoshatelecom.maamonoshatelecomEntity.UserEntity;
+import com.maamonoshatelecom.Entity.UserEntity;
 import com.maamonoshatelecom.service.UserService;
 
 @RestController
-@RequestMapping("/maamonoshatelecom")
+@RequestMapping("/maamonoshatelecom/user")
 public class UserController {
 	
 	@Autowired
 	UserService userService;
 	
-	@PostMapping("postuser")
+	@PostMapping("/save")
 	int postUser(@RequestBody UserEntity userEntity) {
 		int findAll = this.userService.postUser(userEntity);
 		return findAll;
 	}
 
-	@GetMapping("/getuser")
+	@GetMapping("/get")
 	List<UserEntity> getUser() {
 		return this.userService.getUser();
 	}
 	
-	@DeleteMapping("/deleteuser/{id}")
-	int deleteUser(@PathVariable("id") int id)
+	@DeleteMapping("/delete")
+	int deleteUser(@RequestParam int id)
 	{
 		return this.userService.deleteUser(id);
 	}

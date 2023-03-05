@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.maamonoshatelecom.Entity.UserEntity;
 import com.maamonoshatelecom.Repo.UserRepo;
-import com.maamonoshatelecom.maamonoshatelecomEntity.UserEntity;
 import com.maamonoshatelecom.service.UserService;
 
 @Service
