@@ -46,4 +46,13 @@ public class ProductController {
 		ResponseEntity<?> putProduct = this.productService.putProduct(id,productModel);
 		return putProduct;
 	}
+	
+	@GetMapping("/get-product-by-cid")
+	ResponseEntity<?> getProductByCatId(@RequestParam int id){
+		ResponseEntity<?> productByCatId = this.productService.getProductByCatId(id);
+		return productByCatId;
+	}
+	
+	
+	
 }

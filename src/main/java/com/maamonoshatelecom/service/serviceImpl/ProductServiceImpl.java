@@ -99,4 +99,19 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 
+	@Override
+	public ResponseEntity<?> getProductByCatId(int id) {
+		Optional<CategoryEntity> findById = this.categoryRepo.findById(id);
+		if(findById.isPresent()){
+			Optional<List<ProductEntity>> findBycategoryEntity = this.productRepo.findBycategoryEntity(findById.get());
+			if(findBycategoryEntity.isPresent()) {
+				return new ResponseEntity<List<ProductEntity>>(findBycategoryEntity.get(), HttpStatus.OK);
+			}else {
+				return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			return new ResponseEntity<String>("Category Not Found", HttpStatus.NOT_FOUND);
+		}
+	}
+
 }
