@@ -1,6 +1,5 @@
 package com.maamonoshatelecom.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public class ProductController {
 	
 	@GetMapping("/get")
 	ResponseEntity<?> getCategory(){
-		ResponseEntity<List<ProductModel>> product = this.productService.getProduct();
+		ResponseEntity<?> product = this.productService.getProduct();
 		return product;
 	}
 	
@@ -56,3 +55,4 @@ public class ProductController {
 	
 	
 }
+

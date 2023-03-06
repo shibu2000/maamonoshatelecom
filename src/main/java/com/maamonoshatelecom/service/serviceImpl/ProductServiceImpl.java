@@ -1,6 +1,7 @@
 package com.maamonoshatelecom.service.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import com.maamonoshatelecom.Entity.CategoryEntity;
 import com.maamonoshatelecom.Entity.ProductEntity;
 import com.maamonoshatelecom.Repo.CategoryRepo;
 import com.maamonoshatelecom.Repo.ProductRepo;
+import com.maamonoshatelecom.Response.ProductResponse;
 import com.maamonoshatelecom.model.ProductModel;
 import com.maamonoshatelecom.service.ProductService;
 
@@ -32,38 +34,51 @@ public class ProductServiceImpl implements ProductService {
 		productEntity.setProductPrice(productModel.getProductPrice());
 		productEntity.setProductDesc(productModel.getProductDesc());
 
+		productEntity.setProductImageFile(Base64.getDecoder().decode(productModel.getProductImageFile()));
+		productEntity.setProductImageName(productModel.getProductImageName());
+
 		Optional<CategoryEntity> findById = this.categoryRepo.findById(productModel.getCategoryId());
 		if (findById.isPresent()) {
 			productEntity.setCategoryEntity(findById.get());
 			ProductEntity save = this.productRepo.save(productEntity);
-			return new ResponseEntity<ProductEntity>(save, HttpStatus.ACCEPTED);
+			if(save!=null) {
+				return new ResponseEntity<String>("Data Inserted", HttpStatus.ACCEPTED);
+			}else {
+				return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} else {
-			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<String>("Category Not Found", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 
 	@Override
-	public ResponseEntity<List<ProductModel>> getProduct() {
+	public ResponseEntity<?> getProduct() {
 		List<ProductEntity> findAll = this.productRepo.findAll();
-		List<ProductModel> productList = new ArrayList<ProductModel>();
+		List<ProductResponse> productList = new ArrayList<ProductResponse>();
 		findAll.forEach(product -> {
-			ProductModel productModel = new ProductModel();
-			productModel.setId(product.getId());
-			productModel.setProductName(product.getProductName());
-			productModel.setProductPrice(product.getProductPrice());
-			productModel.setProductDesc(product.getProductDesc());
-			productModel.setCategoryId(product.getCategoryEntity().getId());
-			productModel.setCategoryname(product.getCategoryEntity().getCategoryname());
-			productList.add(productModel);
+			ProductResponse productResponse = new ProductResponse();
+			productResponse.setId(product.getId());
+			productResponse.setProductName(product.getProductName());
+			productResponse.setProductPrice(product.getProductPrice());
+			productResponse.setProductDesc(product.getProductDesc());
+
+			productResponse.setProductImageFile(Base64.getEncoder().encodeToString(product.getProductImageFile()));
+			productResponse.setProductImageName(product.getProductImageName());
+
+			productList.add(productResponse);
 		});
 
-		return new ResponseEntity<List<ProductModel>>(productList, HttpStatus.OK);
+		return new ResponseEntity<>(productList, HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<?> deleteProduct(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			this.productRepo.deleteById(id);
+			return new ResponseEntity<String>("Product Removed", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Database Error", HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@Override
@@ -78,16 +93,17 @@ public class ProductServiceImpl implements ProductService {
 				productEntity.setProductPrice(productModel.getProductPrice());
 				productEntity.setProductDesc(productModel.getProductDesc());
 
+				productEntity.setProductImageFile(Base64.getDecoder().decode(productModel.getProductImageFile()));
+				productEntity.setProductImageName(productModel.getProductImageName());
+
 				productEntity.setCategoryEntity(checkCategory.get());
 
 				ProductEntity save = this.productRepo.save(productEntity);
 
-				productModel.setId(save.getId());
 				productModel.setProductName(save.getProductName());
 				productModel.setProductPrice(save.getProductPrice());
 				productModel.setProductDesc(save.getProductDesc());
 				productModel.setCategoryId(save.getCategoryEntity().getId());
-				productModel.setCategoryname(save.getCategoryEntity().getCategoryname());
 
 				return new ResponseEntity<ProductModel>(productModel, HttpStatus.FOUND);
 			} else {
@@ -102,14 +118,14 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ResponseEntity<?> getProductByCatId(int id) {
 		Optional<CategoryEntity> findById = this.categoryRepo.findById(id);
-		if(findById.isPresent()){
+		if (findById.isPresent()) {
 			Optional<List<ProductEntity>> findBycategoryEntity = this.productRepo.findBycategoryEntity(findById.get());
-			if(findBycategoryEntity.isPresent()) {
+			if (findBycategoryEntity.isPresent()) {
 				return new ResponseEntity<List<ProductEntity>>(findBycategoryEntity.get(), HttpStatus.OK);
-			}else {
+			} else {
 				return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
 			}
-		}else {
+		} else {
 			return new ResponseEntity<String>("Category Not Found", HttpStatus.NOT_FOUND);
 		}
 	}

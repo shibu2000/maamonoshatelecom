@@ -1,11 +1,15 @@
 package com.maamonoshatelecom.Entity;
 
+
+import java.util.Arrays;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -15,10 +19,15 @@ public class ProductEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
-	String productName;
-	int productPrice;
-	String productDesc;
+	private int id;
+	private String productName;
+	private int productPrice;
+	private String productDesc;
+	
+	@Lob
+	private byte[] productImageFile; //Base64 to byte[]
+	
+	private String productImageName;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "categoryid")
@@ -29,13 +38,15 @@ public class ProductEntity {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProductEntity(int id, String productName, int productPrice, String productDesc,
-			CategoryEntity categoryEntity) {
+	public ProductEntity(int id, String productName, int productPrice, String productDesc, byte[] productImageFile,
+			String productImageName, CategoryEntity categoryEntity) {
 		super();
 		this.id = id;
 		this.productName = productName;
 		this.productPrice = productPrice;
 		this.productDesc = productDesc;
+		this.productImageFile = productImageFile;
+		this.productImageName = productImageName;
 		this.categoryEntity = categoryEntity;
 	}
 
@@ -71,6 +82,22 @@ public class ProductEntity {
 		this.productDesc = productDesc;
 	}
 
+	public byte[] getProductImageFile() {
+		return productImageFile;
+	}
+
+	public void setProductImageFile(byte[] productImageFile) {
+		this.productImageFile = productImageFile;
+	}
+
+	public String getProductImageName() {
+		return productImageName;
+	}
+
+	public void setProductImageName(String productImageName) {
+		this.productImageName = productImageName;
+	}
+
 	public CategoryEntity getCategoryEntity() {
 		return categoryEntity;
 	}
@@ -82,9 +109,10 @@ public class ProductEntity {
 	@Override
 	public String toString() {
 		return "ProductEntity [id=" + id + ", productName=" + productName + ", productPrice=" + productPrice
-				+ ", productDesc=" + productDesc + ", categoryEntity=" + categoryEntity + "]";
+				+ ", productDesc=" + productDesc + ", productImageFile=" + Arrays.toString(productImageFile)
+				+ ", productImageName=" + productImageName + ", categoryEntity=" + categoryEntity + "]";
 	}
-	
-	
+
+		
 	
 }
