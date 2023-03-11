@@ -40,4 +40,9 @@ public class UserController {
 	ResponseEntity<?> updateUser(@RequestParam("id") String id, @RequestBody UserModel userModel) {
 		return this.updateUser(id, userModel);
 	}
+
+	@GetMapping(value = "/get-user-byid")
+	ResponseEntity<?> getUserByID(@RequestParam("id") String id) {
+		return this.userService.getUserByID(id);
+	}
 }

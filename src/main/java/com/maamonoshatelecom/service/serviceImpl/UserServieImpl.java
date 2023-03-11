@@ -61,6 +61,7 @@ public class UserServieImpl implements UserService {
 		findAll.forEach(user->{
 			UserResponse userResponse = new UserResponse();
 			
+			userResponse.setId(user.getId());
 			userResponse.setFirstName(user.getFirstName());
 			userResponse.setLastName(user.getLastName());
 			userResponse.setMobile(user.getMobile());
@@ -121,6 +122,32 @@ public class UserServieImpl implements UserService {
 			return ResponseEntity.ok("Deleted");
 		} catch (Exception e) {
 			return ResponseEntity.internalServerError().build();
+		}
+	}
+
+	@Override
+	public ResponseEntity<?> getUserByID(String id) {
+		Optional<UserEntity> user = this.userRepo.findById(id);
+		if(user.isPresent()) {
+			
+			UserResponse userResponse = new UserResponse();
+			
+			userResponse.setId(user.get().getId());
+			userResponse.setFirstName(user.get().getFirstName());
+			userResponse.setLastName(user.get().getLastName());
+			userResponse.setMobile(user.get().getMobile());
+			userResponse.setEmail(user.get().getEmail());
+			userResponse.setPassword(user.get().getPassword());
+			Set<String> roles_name = new HashSet<>();
+			
+			user.get().getRoles().forEach(user_roles->{
+				roles_name.add(user_roles.getRole_name());
+			});
+			userResponse.setRole_name(roles_name);
+			
+			return ResponseEntity.ok().body(userResponse);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found");
 		}
 	}
 

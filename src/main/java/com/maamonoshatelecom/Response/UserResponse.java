@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class UserResponse {
 
+	private String id;
 	private String firstName;
 	private String lastName;
 	private long mobile;
@@ -13,9 +14,10 @@ public class UserResponse {
 	
 	private Set<String> role_name = new HashSet<>();
 
-	public UserResponse(String firstName, String lastName, long mobile, String email, String password,
+	public UserResponse(String id, String firstName, String lastName, long mobile, String email, String password,
 			Set<String> role_name) {
 		super();
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.mobile = mobile;
@@ -27,6 +29,14 @@ public class UserResponse {
 	public UserResponse() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -79,8 +89,9 @@ public class UserResponse {
 
 	@Override
 	public String toString() {
-		return "UserResponse [firstName=" + firstName + ", lastName=" + lastName + ", mobile=" + mobile + ", email="
-				+ email + ", password=" + password + ", role_name=" + role_name + "]";
+		return "UserResponse [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", mobile=" + mobile
+				+ ", email=" + email + ", password=" + password + ", role_name=" + role_name + "]";
 	}
+
 	
 }
