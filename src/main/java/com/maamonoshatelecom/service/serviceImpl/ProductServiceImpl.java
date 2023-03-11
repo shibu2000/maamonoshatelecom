@@ -34,16 +34,18 @@ public class ProductServiceImpl implements ProductService {
 		productEntity.setProductPrice(productModel.getProductPrice());
 		productEntity.setProductDesc(productModel.getProductDesc());
 
-		productEntity.setProductImageFile(Base64.getDecoder().decode(productModel.getProductImageFile()));
-		productEntity.setProductImageName(productModel.getProductImageName());
-
+		if (productModel.getProductImageFile() != null) {
+			// Converting Base64 format to Byte Array[]
+			productEntity.setProductImageFile(Base64.getDecoder().decode(productModel.getProductImageFile()));
+			productEntity.setProductImageName(productModel.getProductImageName());
+		}
 		Optional<CategoryEntity> findById = this.categoryRepo.findById(productModel.getCategoryId());
 		if (findById.isPresent()) {
 			productEntity.setCategoryEntity(findById.get());
 			ProductEntity save = this.productRepo.save(productEntity);
-			if(save!=null) {
+			if (save != null) {
 				return new ResponseEntity<String>("Data Inserted", HttpStatus.ACCEPTED);
-			}else {
+			} else {
 				return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} else {
@@ -54,7 +56,9 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ResponseEntity<?> getProduct() {
 		List<ProductEntity> findAll = this.productRepo.findAll();
+		
 		List<ProductResponse> productList = new ArrayList<ProductResponse>();
+		
 		findAll.forEach(product -> {
 			ProductResponse productResponse = new ProductResponse();
 			productResponse.setId(product.getId());
@@ -62,8 +66,11 @@ public class ProductServiceImpl implements ProductService {
 			productResponse.setProductPrice(product.getProductPrice());
 			productResponse.setProductDesc(product.getProductDesc());
 
-			productResponse.setProductImageFile(Base64.getEncoder().encodeToString(product.getProductImageFile()));
-			productResponse.setProductImageName(product.getProductImageName());
+			if (product.getProductImageFile() != null) {
+				// Converting Byte Array[] to Base64 format
+				productResponse.setProductImageFile(Base64.getEncoder().encodeToString(product.getProductImageFile()));
+				productResponse.setProductImageName(product.getProductImageName());
+			}
 
 			productList.add(productResponse);
 		});
@@ -93,8 +100,11 @@ public class ProductServiceImpl implements ProductService {
 				productEntity.setProductPrice(productModel.getProductPrice());
 				productEntity.setProductDesc(productModel.getProductDesc());
 
-				productEntity.setProductImageFile(Base64.getDecoder().decode(productModel.getProductImageFile()));
-				productEntity.setProductImageName(productModel.getProductImageName());
+				if (productModel.getProductImageFile() != null) {
+					// Converting Base64 format to Byte Array[]
+					productEntity.setProductImageFile(Base64.getDecoder().decode(productModel.getProductImageFile()));
+					productEntity.setProductImageName(productModel.getProductImageName());
+				}
 
 				productEntity.setCategoryEntity(checkCategory.get());
 
@@ -120,13 +130,32 @@ public class ProductServiceImpl implements ProductService {
 		Optional<CategoryEntity> findById = this.categoryRepo.findById(id);
 		if (findById.isPresent()) {
 			Optional<List<ProductEntity>> findBycategoryEntity = this.productRepo.findBycategoryEntity(findById.get());
+
+			List<ProductResponse> productResponses = new ArrayList<>();
+
 			if (findBycategoryEntity.isPresent()) {
-				return new ResponseEntity<List<ProductEntity>>(findBycategoryEntity.get(), HttpStatus.OK);
+				findBycategoryEntity.get().forEach(product -> {
+					ProductResponse productResponse = new ProductResponse();
+					productResponse.setId(product.getId());
+					productResponse.setProductName(product.getProductName());
+					productResponse.setProductPrice(product.getProductPrice());
+					productResponse.setProductDesc(product.getProductDesc());
+
+					if (product.getProductImageFile() != null) {
+						// Converting Byte Array[] to Base64 file format
+						productResponse
+								.setProductImageFile(Base64.getEncoder().encodeToString(product.getProductImageFile()));
+						productResponse.setProductImageName(product.getProductImageName());
+					}
+
+					productResponses.add(productResponse);
+				});
+				return ResponseEntity.ok(productResponses);
 			} else {
-				return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+				return ResponseEntity.status(HttpStatus.OK).body("No Product Found");
 			}
 		} else {
-			return new ResponseEntity<String>("Category Not Found", HttpStatus.NOT_FOUND);
+			return ResponseEntity.ok("Category Not Found");
 		}
 	}
 

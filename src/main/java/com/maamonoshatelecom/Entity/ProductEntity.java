@@ -3,8 +3,8 @@ package com.maamonoshatelecom.Entity;
 
 import java.util.Arrays;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +29,7 @@ public class ProductEntity {
 	
 	private String productImageName;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "categoryid")
 	CategoryEntity categoryEntity;
 
@@ -113,6 +113,4 @@ public class ProductEntity {
 				+ ", productImageName=" + productImageName + ", categoryEntity=" + categoryEntity + "]";
 	}
 
-		
-	
 }

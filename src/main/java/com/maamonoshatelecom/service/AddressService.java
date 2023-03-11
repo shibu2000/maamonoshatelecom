@@ -13,7 +13,7 @@ public interface AddressService {
 	
 	ResponseEntity<?> putAddress(int id, AddressModel addressModel);
 	
-	ResponseEntity<?> deleteAddressByUserID(int userID);
+	ResponseEntity<?> deleteAddressByUserID(String userID);
 	
-	ResponseEntity<?> getAddressByUser_ID(int user_id);
+	ResponseEntity<?> getAddressByUser_ID(String user_id);
 }

@@ -12,6 +12,7 @@ import com.maamonoshatelecom.Entity.AddressEntity;
 import com.maamonoshatelecom.Entity.UserEntity;
 import com.maamonoshatelecom.Repo.AddressRepo;
 import com.maamonoshatelecom.Repo.UserRepo;
+import com.maamonoshatelecom.Response.AddressResponse;
 import com.maamonoshatelecom.model.AddressModel;
 import com.maamonoshatelecom.service.AddressService;
 
@@ -52,7 +53,23 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public ResponseEntity<?> getAddress() {
 		List<AddressEntity> findAll = this.addressRepo.findAll();
-		return ResponseEntity.status(HttpStatus.OK).body(findAll);
+		
+		List<AddressResponse> addressResponses = new ArrayList<>();
+		
+		findAll.forEach(address->{
+			AddressResponse addressResponse = new AddressResponse();
+			addressResponse.setId(address.getId());
+			addressResponse.setCity(address.getCity());
+			addressResponse.setCountry(address.getCountry());
+			addressResponse.setStreet(address.getStreet());
+			addressResponse.setState(address.getState());
+			addressResponse.setZip_code(address.getZip_code());
+			addressResponse.setUser_id(address.getUserEntity().getId());
+			
+			addressResponses.add(addressResponse);
+		});
+		
+		return ResponseEntity.status(HttpStatus.OK).body(addressResponses);
 	}
 
 	@Override
@@ -88,7 +105,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public ResponseEntity<?> deleteAddressByUserID(int userID) {
+	public ResponseEntity<?> deleteAddressByUserID(String userID) {
 		try {
 			this.addressRepo.deleteAllByuserEntity(this.userRepo.findById(userID).get());
 			return ResponseEntity.ok("Delete Successfull");
@@ -98,7 +115,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public ResponseEntity<?> getAddressByUser_ID(int user_id) {
+	public ResponseEntity<?> getAddressByUser_ID(String user_id) {
 		Optional<UserEntity> userEntity = this.userRepo.findById(user_id);
 
 		List<AddressEntity> findAllByuserEntity = this.addressRepo.findAllByuserEntity(userEntity.get());
@@ -113,7 +130,7 @@ public class AddressServiceImpl implements AddressService {
 				addressModel.setState(address.getState());
 				addressModel.setStreet(address.getStreet());
 				addressModel.setZip_code(address.getZip_code());
-				addressModel.setUser_id(address.getUserEntity().getId());
+//				addressModel.setUser_id(address.getUserEntity().getId());
 				addressModels.add(addressModel);
 			});
 

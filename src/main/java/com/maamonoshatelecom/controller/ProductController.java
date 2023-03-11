@@ -35,19 +35,19 @@ public class ProductController {
 	}
 	
 	@DeleteMapping("/delete")
-	ResponseEntity<?> deleteCategory(@RequestParam int id) {
+	ResponseEntity<?> deleteCategory(@RequestParam("id") int id) {
 		ResponseEntity<?> deleteProduct = this.productService.deleteProduct(id);
 		return deleteProduct;
 	}
 	
 	@PutMapping("/update")
-	ResponseEntity<?> putCategory(@RequestParam int id, @RequestBody ProductModel productModel) {
+	ResponseEntity<?> putCategory(@RequestParam("id") int id, @RequestBody ProductModel productModel) {
 		ResponseEntity<?> putProduct = this.productService.putProduct(id,productModel);
 		return putProduct;
 	}
 	
 	@GetMapping("/get-product-by-cid")
-	ResponseEntity<?> getProductByCatId(@RequestParam int id){
+	ResponseEntity<?> getProductByCatId(@RequestParam("id") int id){
 		ResponseEntity<?> productByCatId = this.productService.getProductByCatId(id);
 		return productByCatId;
 	}

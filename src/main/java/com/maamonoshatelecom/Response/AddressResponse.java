@@ -1,20 +1,20 @@
-package com.maamonoshatelecom.model;
+package com.maamonoshatelecom.Response;
 
+public class AddressResponse {
 
-
-public class AddressModel {
 	private int id;
 	private String street;
 	private String city;
 	private String state;
 	private String country;
+
 	private int zip_code;
 	private String user_id;
-	public AddressModel() {
+	public AddressResponse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public AddressModel(int id, String street, String city, String state, String country, int zip_code,
+	public AddressResponse(int id, String street, String city, String state, String country, int zip_code,
 			String user_id) {
 		super();
 		this.id = id;
@@ -69,9 +69,8 @@ public class AddressModel {
 	}
 	@Override
 	public String toString() {
-		return "AddressModel [id=" + id + ", street=" + street + ", city=" + city + ", state=" + state + ", country="
+		return "AddressResponse [id=" + id + ", street=" + street + ", city=" + city + ", state=" + state + ", country="
 				+ country + ", zip_code=" + zip_code + ", user_id=" + user_id + "]";
 	}
-	
 	
 }

@@ -1,13 +1,13 @@
 package com.maamonoshatelecom.service;
 
-import java.util.List;
+import org.springframework.http.ResponseEntity;
 
-import com.maamonoshatelecom.Entity.UserEntity;
+import com.maamonoshatelecom.model.UserModel;
 
 public interface UserService {
-	int postUser(UserEntity userEntity);
-	List<UserEntity> getUser();
-	int putUser(UserEntity userEntity);
-	int deleteUser(int id);
+	ResponseEntity<?> postUser(UserModel userModel);
+	ResponseEntity<?> getUser();
+	ResponseEntity<?> putUser(String id, UserModel userModel);
+	ResponseEntity<?> deleteUser(String id);
 
 }

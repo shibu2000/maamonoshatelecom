@@ -1,7 +1,5 @@
 package com.maamonoshatelecom.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maamonoshatelecom.Entity.UserEntity;
+import com.maamonoshatelecom.model.UserModel;
 import com.maamonoshatelecom.service.UserService;
 
 @RestController
@@ -24,23 +22,22 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/save")
-	int postUser(@RequestBody UserEntity userEntity) {
-		int findAll = this.userService.postUser(userEntity);
-		return findAll;
+	ResponseEntity<?> postUser(@RequestBody UserModel userModel) {
+		return this.userService.postUser(userModel);
 	}
 
 	@GetMapping("/get")
-	List<UserEntity> getUser() {
+	ResponseEntity<?> getUser() {
 		return this.userService.getUser();
 	}
 
 	@DeleteMapping("/delete")
-	int deleteUser(@RequestParam int id) {
+	ResponseEntity<?> deleteUser(@RequestParam("id") String id) {
 		return this.userService.deleteUser(id);
 	}
 
-	@PutMapping
-	ResponseEntity<?> updateUser() {
-		return null;
+	@PutMapping(value = "/update")
+	ResponseEntity<?> updateUser(@RequestParam("id") String id, @RequestBody UserModel userModel) {
+		return this.updateUser(id, userModel);
 	}
 }

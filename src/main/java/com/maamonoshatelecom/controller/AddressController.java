@@ -46,13 +46,13 @@ public class AddressController {
 	}
 	
 	@DeleteMapping("/delete-address-by-uid")
-	ResponseEntity<?> deleteAddressByUserID(@RequestParam("userid") int userid){
+	ResponseEntity<?> deleteAddressByUserID(@RequestParam("userid") String userid){
 		ResponseEntity<?> deleteAddressByUserID = this.addressService.deleteAddressByUserID(userid);
 		return deleteAddressByUserID;
 	}
 	
 	@GetMapping("/get-address-by-uid")
-	ResponseEntity<?> getAddressByUser_ID(@RequestParam("userid") int userid){
+	ResponseEntity<?> getAddressByUser_ID(@RequestParam("userid") String userid){
 		ResponseEntity<?> addressByUser_ID = this.addressService.getAddressByUser_ID(userid);
 		return addressByUser_ID;
 	}

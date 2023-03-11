@@ -1,11 +1,9 @@
 package com.maamonoshatelecom.Repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.maamonoshatelecom.Entity.UserEntity;
 
-@Repository
-public interface UserRepo extends JpaRepository<UserEntity, Integer>{
+public interface UserRepo extends JpaRepository<UserEntity, String>{
 
 }
