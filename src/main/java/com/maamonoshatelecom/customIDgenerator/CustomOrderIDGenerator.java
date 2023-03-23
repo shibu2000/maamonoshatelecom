@@ -1,5 +1,8 @@
 package com.maamonoshatelecom.customIDgenerator;
 
+import java.io.Serializable;
+import java.util.Properties;
+
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -9,11 +12,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.LongType;
 import org.hibernate.type.Type;
 
-import java.io.Serializable;
-import java.util.Properties;
-
-public class CustomidGenerator extends SequenceStyleGenerator {
-
+public class CustomOrderIDGenerator extends SequenceStyleGenerator{
 	public static final String VALUE_PREFIX_PARAMETER = "valuePrefix";
 	public static final String VALUE_PREFIX_DEFAULT = "";
 
@@ -35,5 +34,4 @@ public class CustomidGenerator extends SequenceStyleGenerator {
 	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
 		return valuePrefix + String.format(numberFormat, super.generate(session, object));
 	}
-
 }

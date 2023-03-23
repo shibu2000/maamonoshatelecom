@@ -9,17 +9,19 @@ import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import com.maamonoshatelecom.customIDgenerator.CustomidGenerator;
+import com.maamonoshatelecom.customIDgenerator.CustomUserIDGenerator;
+
+
 
 @Entity
 @Table(name = "users")
 public class UserEntity {
 
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom_id_generator")
-	@GenericGenerator(name = "custom_id_generator", strategy = "com.maamonoshatelecom.customIDgenerator.CustomidGenerator", parameters = {
-			@Parameter(name = CustomidGenerator.INCREMENT_PARAM, value = "1"),
-			@Parameter(name = CustomidGenerator.VALUE_PREFIX_PARAMETER, value = "MMTU"),
-			@Parameter(name = CustomidGenerator.NUMBER_FORMAT_PARAMETER, value = "%07d") })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom_user_id_generator")
+	@GenericGenerator(name = "custom_user_id_generator", strategy = "com.maamonoshatelecom.customIDgenerator.CustomUserIDGenerator", parameters = {
+			@Parameter(name = CustomUserIDGenerator.INCREMENT_PARAM, value = "1"),
+			@Parameter(name = CustomUserIDGenerator.VALUE_PREFIX_PARAMETER, value = "MMTU"),
+			@Parameter(name = CustomUserIDGenerator.NUMBER_FORMAT_PARAMETER, value = "%07d") })
 	@Id
 	private String id;
 	private String firstName;
